@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Roman Numbers</h1>
+    <p class="lead">Enter Roman number and convert it to Arabic numbers.</p>
+    <p><a href="https://asp.net" class="btn btn-warning btn-lg">Download repo from Github &raquo;</a></p>
+</div>
+
+<div style="padding:4%">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="row"><h3>Enter Roman Number</h3></div>
+            <br />
+            <div class="row"><input id="idRoman" class="input-lg" /></div>
+            <br />
+            <div class="row"><button id="idConvert" class="btn btn-warning">Convert</button></div>
+            <br />
+            <div class="row"><input id="idArabig" class="input-lg" disabled /></div>
+            <br />
+            <div id="idMessage" hidden="hidden"></div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+
+<script type="text/javascript">
+    $("#idConvert").click(function () {
+        var roman = $("#idRoman").val();
+        var converted = roman_to_Int(roman);
+        $("#idArabig").val(converted);
+    });
+
+    function roman_to_Int(str1) {
+        if (str1 == null) return -1;
+        var num = char_to_int(str1.charAt(0));
+        var pre, curr;
+
+        for (var i = 1; i < str1.length; i++) {
+            curr = char_to_int(str1.charAt(i));
+            pre = char_to_int(str1.charAt(i - 1));
+            if (curr <= pre) {
+                num += curr;
+            } else {
+                num = num - pre * 2 + curr;
+            }
+        }
+
+        return num;
+    }
+
+    function char_to_int(c) {
+        switch (c) {
+            case 'I': return 1;
+            case 'V': return 5;
+            case 'X': return 10;
+            case 'L': return 50;
+            case 'C': return 100;
+            case 'D': return 500;
+            case 'M': return 1000;
+            default: return -1;
+        }
+    }
+
+    $("#idRoman").keyup(function () {
+        var txt = $("#idRoman").val();
+        allLetter(txt);
+    });
+
+    function allLetter(inputtxt) {
+        var letters = /^[IVXLCDM]+$/;
+        if (inputtxt.match(letters)) {
+            return true;
+        }
+        else {
+            inputtxt = inputtxt.substring(0, inputtxt.length-1);
+            $("#idRoman").val(inputtxt);
+            return false;
+        }
+    }
+
+</script>
+
+@*
+    References:
+    https://www.w3resource.com/javascript-exercises/javascript-math-exercise-22.php
+    https://www.w3resource.com/javascript/form/all-letters-field.php
+*@
+
